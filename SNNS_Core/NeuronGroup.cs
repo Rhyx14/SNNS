@@ -4,35 +4,37 @@ using System.Text;
 
 namespace SNNS_Core
 {
-    class NeuronGroup
+    /// <summary>
+    /// 神经元组
+    /// 方便建立网络使用，本身不存储神经元和突触的实例
+    /// </summary>
+    public class NeuronGroup
     {
         public string Name { get; set; }
+        /// <summary>
+        /// 该group中的神经元在总神经元列表中的位置
+        /// </summary>
         int Offset { get; set; }
+        /// <summary>
+        /// 该group神经元个数
+        /// </summary>
         int Count { get; set; }
 
-        int Added { get; set; } = 0;
-        public NeuronGroup(int count,string name="undefined")
+        public NeuronGroup(NeuronBase[] neurons, string name="undefined")
         {
+            var count = neurons.Length;
             this.Offset = Core.GetIndex(count);
             this.Count = count;
             this.Name = name;
-        }
 
-        /// <summary>
-        /// 添加神经元
-        /// </summary>
-        /// <param name="n"></param>
-        public void Add(NeuronBase n)
-        {
-            if (Added == Count)
+            var neuronsArray = Core.GetNeurons();
+            for (int i = 0; i < count; i++)
             {
-                throw new Exception("This group has been already filled to the full.");
+                var n = neurons[i];
+                n.ID = Offset + i;
+                n.GroupID = i;
+                neuronsArray.Add(n);
             }
-            var neurons = Core.GetNeurons();
-            n.ID = Offset + Added;
-            n.GroupID = Added;
-            Added++;
-            neurons.Add(n);
         }
 
         /// <summary>

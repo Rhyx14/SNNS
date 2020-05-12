@@ -8,7 +8,7 @@ namespace SNNS_Models
     /// <summary>
     /// IF神经元，采用WeightSynapse突触
     /// </summary>
-    class IFNeuron:NeuronBase
+    public class IFNeuron:NeuronBase
     {
         public int Refractory { get; set; } = 0;
         public double MembranePotential { get; set; } = 0;
