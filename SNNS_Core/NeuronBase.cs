@@ -1,24 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace SNNS_Core
 {
-    class NeuronBase
+    public class NeuronBase
     {
-        List<SynapseBase> Synapses { get; set; }
-        List<int> Axon { get; set; }
-        int ID { get; set; }
-        int GroupID { get; set; }
-        bool IsFiring { get; set; }
-        public virtual void Update() { }
+        public List<int> Synapses { get; set; } = new List<int>();
+        public List<int> Axon { get; set; } = new List<int>();
+        public int ID { get; set; }
+        public int GroupID { get; set; }
+        public bool IsFiring { get; set; }
+        /// <summary>
+        /// 更新神经元状态
+        /// </summary>
+        public virtual void NeuronStateUpdate() { }
 
         /// <summary>
-        /// 
+        /// 更新神经元信息
         /// </summary>
-        public void Receive()
+        public void Update()
         {
-            // TODO TPL
+            foreach (var s_id in Synapses)
+            {
+                SynapseBase.Synapses[s_id].Update();
+            }
+            NeuronStateUpdate();
         }
     }
 }
