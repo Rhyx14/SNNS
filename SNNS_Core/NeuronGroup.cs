@@ -64,7 +64,7 @@ namespace SNNS_Core
             synapse.Pre_SynapseID = n1.ID;
             synapse.Post_SynapseID = n2.ID;
             //添加突触
-            n2.Synapses.Add(synapse.ID);
+            n2.Afferent.Add(synapse.ID);
             //添加轴突
             n1.Axon.Add(synapse.ID);
         }

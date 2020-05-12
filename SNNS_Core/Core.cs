@@ -38,8 +38,11 @@ namespace SNNS_Core
                     {
                         foreach (var s_id in n.Axon)
                         {
-                            SynapseBase.Synapses[s_id].Received = true;
+                            var s = SynapseBase.Synapses[s_id];
+                            s.Received = true;
+                            s.OnReceived();
                         }
+                        n.IsFiring = false;
                     }
                 });
             }

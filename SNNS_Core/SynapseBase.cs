@@ -31,5 +31,9 @@ namespace SNNS_Core
 
         public bool Received { get; set; }
         public virtual void Update() { }
+        /// <summary>
+        /// 第一次接受到脉冲
+        /// </summary>
+        public virtual void OnReceived() { }
     }
 }

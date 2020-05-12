@@ -5,7 +5,8 @@ using SNNS_Core;
 
 namespace SNNS_Models
 {
-    class WeightSynapse:SynapseBase
+    public class WeightSynapse:SynapseBase
     {
+        public double Weight { get; set; } = 0;
     }
 }
