@@ -15,11 +15,13 @@ namespace SNNS_Core
         /// 该group中的神经元在总神经元列表中的位置
         /// </summary>
         int Offset { get; set; }
-        /// <summary>
-        /// 该group神经元个数
-        /// </summary>
-        int Count { get; set; }
+        public int Count { get; }
 
+        /// <summary>
+        /// 创建神经元组
+        /// </summary>
+        /// <param name="neurons">神经元实例列表</param>
+        /// <param name="name">神经元组名称</param>
         public NeuronGroup(NeuronBase[] neurons, string name="undefined")
         {
             var count = neurons.Length;
@@ -31,6 +33,29 @@ namespace SNNS_Core
             for (int i = 0; i < count; i++)
             {
                 var n = neurons[i];
+                n.ID = Offset + i;
+                n.GroupID = i;
+                neuronsArray.Add(n);
+            }
+        }
+
+        /// <summary>
+        /// 创建神经元组
+        /// </summary>
+        /// <param name="length">神经元个数</param>
+        /// <param name="neuronType">神经元类型</param>
+        /// <param name="name">神经元名称</param>
+        public NeuronGroup(int length,Type neuronType,string name = "undefined")
+        {
+            var count = length;
+            this.Offset = Core.GetIndex(count);
+            this.Count = count;
+            this.Name = name;
+
+            var neuronsArray = Core.GetNeurons();
+            for (int i = 0; i < count; i++)
+            {
+                var n = Activator.CreateInstance(neuronType) as NeuronBase;
                 n.ID = Offset + i;
                 n.GroupID = i;
                 neuronsArray.Add(n);
