@@ -7,8 +7,16 @@ namespace SNNS_Core
 {
     public class NeuronBase
     {
-        public List<int> Afferent { get; set; } = new List<int>();
-        public List<int> Axon { get; set; } = new List<int>();
+        static public List<NeuronBase> AllNeurons { get; } = new List<NeuronBase>();
+        public NeuronBase()
+        {
+            ID = AllNeurons.Count;
+            AllNeurons.Add(this);
+        }
+
+
+        public List<SynapseBase> Afferent { get; set; } = new List<SynapseBase>();
+        public List<SynapseBase> Axon { get; set; } = new List<SynapseBase>();
         public int ID { get; set; }
         public int GroupID { get; set; }
         public bool IsFiring { get; set; }
@@ -22,11 +30,13 @@ namespace SNNS_Core
         /// </summary>
         public void Update()
         {
-            foreach (var s_id in Afferent)
+            foreach (var syn in Afferent)
             {
-                SynapseBase.Synapses[s_id].Update();
+                syn.Update();
+                //dod();
             }
             NeuronStateUpdate();
         }
+
     }
 }

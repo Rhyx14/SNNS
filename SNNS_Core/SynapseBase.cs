@@ -6,21 +6,8 @@ namespace SNNS_Core
 {
     public class SynapseBase
     {
-        static int Count { get; set; } = 0;
-
         /// <summary>
-        /// 突触列表
-        /// </summary>
-        static public List<SynapseBase> Synapses { get; }=new List<SynapseBase>();
-
-        public SynapseBase()
-        {
-            this.ID = Count;
-            Count++;
-            Synapses.Add(this);
-        }
-        /// <summary>
-        /// 前射神经元的ID
+        /// 前射神经元的全局ID
         /// </summary>
         public int Pre_SynapseID { get; set; } = -1;
         public int Post_SynapseID { get; set; } = -1;

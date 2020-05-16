@@ -14,16 +14,14 @@ namespace SNNS_Core
             index += count;
             return tmp;
         }
-        /// <summary>
-        /// 获取神经列表
-        /// </summary>
-        /// <returns></returns>
-        static public List<NeuronBase> GetNeurons()
-        {
-            return Neurons;
-        }
-        static List<NeuronBase> Neurons { get; set; } = new List<NeuronBase>();
 
+        /// <summary>
+        /// 压缩部分内存空间
+        /// </summary>
+        static public void Trim()
+        {
+            NeuronBase.AllNeurons.TrimExcess();
+        }
         /// <summary>
         /// 运行网络
         /// </summary>
@@ -33,21 +31,20 @@ namespace SNNS_Core
             for (int i = 0; i < time; i++)
             {
                 //更新神经元
-                Parallel.ForEach(Neurons, (n) =>
+                Parallel.ForEach(NeuronBase.AllNeurons, (n) =>
                 {
-                    n.Update();
+                   n.Update();
                 });
-                // 路由脉冲信息
-                // 一条突触只能有一对后射-前射对应，所以不用担心数据竞争
-                Parallel.ForEach(Neurons, (n) =>
+                //路由脉冲信息
+                //一条突触只能有一对后射-前射对应，所以不用担心数据竞争
+                Parallel.ForEach(NeuronBase.AllNeurons, (n) =>
                 {
                     if (n.IsFiring)
                     {
-                        foreach (var s_id in n.Axon)
+                        foreach (var syn in n.Axon)
                         {
-                            var s = SynapseBase.Synapses[s_id];
-                            s.Received = true;
-                            s.OnReceived();
+                            syn.Received = true;
+                            syn.OnReceived();
                         }
                         n.IsFiring = false;
                     }

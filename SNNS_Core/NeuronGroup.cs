@@ -12,10 +12,16 @@ namespace SNNS_Core
     {
         public string Name { get; set; }
         /// <summary>
-        /// 该group中的神经元在总神经元列表中的位置
+        /// 该group中的神经元在总神经元列表中的起始位置
         /// </summary>
         int Offset { get; set; }
         public int Count { get; }
+
+        /// <summary>
+        /// 神经元数组
+        /// 注意该数组中的实例会同时被Core中的list保存
+        /// </summary>
+        NeuronBase[] Neurons { get; set; }
 
         /// <summary>
         /// 创建神经元组
@@ -28,14 +34,11 @@ namespace SNNS_Core
             this.Offset = Core.GetIndex(count);
             this.Count = count;
             this.Name = name;
+            this.Neurons = neurons;
 
-            var neuronsArray = Core.GetNeurons();
             for (int i = 0; i < count; i++)
             {
-                var n = neurons[i];
-                n.ID = Offset + i;
-                n.GroupID = i;
-                neuronsArray.Add(n);
+                neurons[i].GroupID = i;
             }
         }
 
@@ -45,20 +48,18 @@ namespace SNNS_Core
         /// <param name="length">神经元个数</param>
         /// <param name="neuronType">神经元类型</param>
         /// <param name="name">神经元名称</param>
-        public NeuronGroup(int length,Type neuronType,string name = "undefined")
+        public NeuronGroup(int count,Type neuronType,string name = "undefined")
         {
-            var count = length;
             this.Offset = Core.GetIndex(count);
             this.Count = count;
             this.Name = name;
+            this.Neurons = new NeuronBase[count];
 
-            var neuronsArray = Core.GetNeurons();
             for (int i = 0; i < count; i++)
             {
                 var n = Activator.CreateInstance(neuronType) as NeuronBase;
-                n.ID = Offset + i;
                 n.GroupID = i;
-                neuronsArray.Add(n);
+                this.Neurons[i] = n;
             }
         }
 
@@ -71,8 +72,7 @@ namespace SNNS_Core
         {
             get
             {
-                var neurons = Core.GetNeurons();
-                return neurons[index + Offset];
+                return Neurons[index];
             }
         }
 
@@ -91,9 +91,9 @@ namespace SNNS_Core
             synapse.Pre_SynapseID = n1.ID;
             synapse.Post_SynapseID = n2.ID;
             //添加突触
-            n2.Afferent.Add(synapse.ID);
+            n2.Afferent.Add(synapse);
             //添加轴突
-            n1.Axon.Add(synapse.ID);
+            n1.Axon.Add(synapse);
         }
     }
 }

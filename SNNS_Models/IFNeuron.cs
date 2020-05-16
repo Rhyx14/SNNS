@@ -47,9 +47,9 @@ namespace SNNS_Models
         double Integrate()
         {
             double res = 0.0;
-            foreach (var s_id in this.Afferent)
+            foreach (var syn in this.Afferent)
             {
-                var s = SynapseBase.Synapses[s_id] as WeightSynapse;
+                var s = syn as WeightSynapse;
                 if (s.Received)
                 {
                     res += s.Weight;
