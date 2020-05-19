@@ -8,7 +8,7 @@ namespace SNNS_Core
     /// 神经元组
     /// 方便建立网络使用，本身不存储神经元和突触的实例
     /// </summary>
-    public class NeuronGroup
+    public class NeuronGroup<T> where T:NeuronBase
     {
         public string Name { get; set; }
         /// <summary>
@@ -21,14 +21,14 @@ namespace SNNS_Core
         /// 神经元数组
         /// 注意该数组中的实例会同时被Core中的list保存
         /// </summary>
-        NeuronBase[] Neurons { get; set; }
+        T[] Neurons { get; set; }
 
         /// <summary>
         /// 创建神经元组
         /// </summary>
         /// <param name="neurons">神经元实例列表</param>
         /// <param name="name">神经元组名称</param>
-        public NeuronGroup(NeuronBase[] neurons, string name="undefined")
+        public NeuronGroup(T[] neurons, string name = "undefined")
         {
             var count = neurons.Length;
             this.Offset = Core.GetIndex(count);
@@ -48,16 +48,16 @@ namespace SNNS_Core
         /// <param name="length">神经元个数</param>
         /// <param name="neuronType">神经元类型</param>
         /// <param name="name">神经元名称</param>
-        public NeuronGroup(int count,Type neuronType,string name = "undefined")
+        public NeuronGroup(int count, string name = "undefined")
         {
             this.Offset = Core.GetIndex(count);
             this.Count = count;
             this.Name = name;
-            this.Neurons = new NeuronBase[count];
+            this.Neurons = new T[count];
 
             for (int i = 0; i < count; i++)
             {
-                var n = Activator.CreateInstance(neuronType) as NeuronBase;
+                var n = Activator.CreateInstance<T>();
                 n.GroupID = i;
                 this.Neurons[i] = n;
             }
@@ -68,7 +68,7 @@ namespace SNNS_Core
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public NeuronBase this[int index]
+        public T this[int index]
         {
             get
             {
@@ -84,7 +84,7 @@ namespace SNNS_Core
         /// <param name="i">前射神经元的GroupID</param>
         /// <param name="j">后射神经元的GroupID</param>
         /// <param name="synapse">突触的实例</param>
-        public static void Connect(NeuronGroup g1, NeuronGroup g2, int i, int j, SynapseBase synapse)
+        public static void Connect(NeuronGroup<T> g1, NeuronGroup<T> g2, int i, int j, SynapseBase synapse)
         {
             var n1 = g1[i];
             var n2 = g2[j];
@@ -96,4 +96,5 @@ namespace SNNS_Core
             n1.Axon.Add(synapse);
         }
     }
+
 }

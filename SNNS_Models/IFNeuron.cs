@@ -13,7 +13,7 @@ namespace SNNS_Models
         public int Refractory { get; set; } = 0;
         public double MembranePotential { get; set; } = 0;
         public double MinPotential { get; set; } = 0;
-        public double MaxPotential { get; set; } = 10;
+        public double MaxPotential { get; set; } = 100;
         public double Threshold { get; set; } = 1;
         public double Current { get; set; } = 0;
         double ActualRefractory { get; set; } = 0;

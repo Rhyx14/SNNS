@@ -30,11 +30,19 @@ namespace SNNS_Core
         /// </summary>
         public void Update()
         {
+            // Debug下Foreach比for快一点？
+            // Release下相反
+#if DEBUG
             foreach (var syn in Afferent)
             {
                 syn.Update();
-                //dod();
             }
+#else
+            for (int i = 0; i < Afferent.Count; i++)
+            {
+                Afferent[i].Update();
+            }
+#endif
             NeuronStateUpdate();
         }
 

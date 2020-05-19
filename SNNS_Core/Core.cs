@@ -32,9 +32,8 @@ namespace SNNS_Core
             {
                 //更新神经元
                 Parallel.ForEach(NeuronBase.AllNeurons, (n) =>
-                {
-                   n.Update();
-                });
+                    n.Update()
+                );
                 //路由脉冲信息
                 //一条突触只能有一对后射-前射对应，所以不用担心数据竞争
                 Parallel.ForEach(NeuronBase.AllNeurons, (n) =>
