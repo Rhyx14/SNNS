@@ -12,12 +12,11 @@ namespace SNNS_Models
     {
         public int Refractory { get; set; } = 0;
         public double MembranePotential { get; set; } = 0;
-        public double MinPotential { get; set; } = 0;
+        public double MinPotential { get; set; } = -100;
         public double MaxPotential { get; set; } = 100;
         public double Threshold { get; set; } = 1;
         public double Current { get; set; } = 0;
-        double ActualRefractory { get; set; } = 0;
-
+        int ActualRefractory { get; set; } = 0;
         /// <summary>
         /// 记录有多少次脉冲
         /// </summary>
@@ -39,6 +38,7 @@ namespace SNNS_Models
             {
                 this.IsFiring = true;
                 MembranePotential -= Threshold;
+                MembranePotential = MembranePotential >= MinPotential ? MembranePotential : MinPotential;
                 ActualRefractory = Refractory;
                 SpikeCounts += 1;
             }

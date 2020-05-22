@@ -26,7 +26,7 @@ namespace SNNS_Core
         /// 运行网络
         /// </summary>
         /// <param name="time">运行时间（ticks）</param>
-        public static void Run(int time)
+        public static void Run_TPL(int time)
         {
             for (int i = 0; i < time; i++)
             {
