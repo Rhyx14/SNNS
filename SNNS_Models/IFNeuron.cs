@@ -50,10 +50,10 @@ namespace SNNS_Models
             foreach (var syn in this.Afferent)
             {
                 var s = syn as WeightSynapse;
-                if (s.Received)
+                if (s.HasReceived())
                 {
                     res += s.Weight;
-                    s.Received = false;
+                    s.Pass();
                 }
             }
             return res;

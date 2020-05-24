@@ -11,15 +11,12 @@ namespace SNNS_Core
     public class NeuronGroup<T> where T:NeuronBase
     {
         public string Name { get; set; }
-        /// <summary>
-        /// 该group中的神经元在总神经元列表中的起始位置
-        /// </summary>
-        int Offset { get; set; }
+
         public int Count { get; }
 
         /// <summary>
         /// 神经元数组
-        /// 注意该数组中的实例会同时被Core中的list保存
+        /// 注意该数组中的实例会同时被NeuronsBase中的list保存
         /// </summary>
         T[] Neurons { get; set; }
 
@@ -31,7 +28,6 @@ namespace SNNS_Core
         public NeuronGroup(T[] neurons, string name = "undefined")
         {
             var count = neurons.Length;
-            this.Offset = Core.GetIndex(count);
             this.Count = count;
             this.Name = name;
             this.Neurons = neurons;
@@ -50,7 +46,6 @@ namespace SNNS_Core
         /// <param name="name">神经元名称</param>
         public NeuronGroup(int count, string name = "undefined")
         {
-            this.Offset = Core.GetIndex(count);
             this.Count = count;
             this.Name = name;
             this.Neurons = new T[count];
@@ -58,7 +53,7 @@ namespace SNNS_Core
             for (int i = 0; i < count; i++)
             {
                 var n = Activator.CreateInstance<T>();
-                n.GroupID = i;
+                n.GroupID = i;//全局ID在构造函数时候就会初始化，不必要在此赋值
                 this.Neurons[i] = n;
             }
         }

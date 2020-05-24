@@ -8,6 +8,7 @@ namespace SNNS_Core
     public class NeuronBase
     {
         static public List<NeuronBase> AllNeurons { get; } = new List<NeuronBase>();
+
         public NeuronBase()
         {
             ID = AllNeurons.Count;
