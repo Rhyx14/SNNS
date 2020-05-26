@@ -16,51 +16,29 @@ namespace SNNS_Core
         /// </summary>
         public int ID { get; set; }
 
-        bool Received_A { get; set; } = false;
-        bool Received_B { get; set; } = false;
+        ReceiptFlag RA = new ReceiptFlag();
+        ReceiptFlag RB = new ReceiptFlag();
+
+        /// <summary>
+        /// 是否接收到脉冲,由神经元调用
+        /// </summary>
+        public ReceiptFlag GetReceiptFlag()
+        {
+            if (Core.IsRoundB)
+            {
+                return RA;
+            }
+            else
+            {
+                return RB;
+            }
+        }
+
         public virtual void Update() { }
         /// <summary>
         /// 第一次接受到脉冲的动作
         /// </summary>
         public virtual void OnReceived() { }
-
-
-        /// <summary>
-        /// 是否接收到脉冲,由神经元调用
-        /// </summary>
-        public bool HasReceived()
-        {
-            if (Core.IsRoundB)
-            {
-                return Received_A;
-            }
-            return Received_B;
-        }
-        public void Receive()
-        {
-            if (Core.IsRoundB)
-            {
-                Received_A=true;
-            }
-            else
-            {
-                Received_B = true;
-            }
-        }      
-        /// <summary>
-        /// 该突触将收到的脉冲传递出去（收到脉冲flag设为false）
-        /// </summary>
-        public void Pass()
-        {
-            if (Core.IsRoundB)
-            {
-                Received_A = false;
-            }
-            else
-            {
-                Received_B = false;
-            }
-        }
 
         /// <summary>
         /// 设置Receive flag
@@ -72,12 +50,18 @@ namespace SNNS_Core
         {
             if (Core.IsRoundB)
             {
-                Received_B = true;
+                RB.Value = true;
             }
             else
             {
-                Received_A = true;
+                RA.Value = true;
             }
         }
+    
+    }
+
+    public class ReceiptFlag
+    {
+        public bool Value { get; set; } = false;
     }
 }
