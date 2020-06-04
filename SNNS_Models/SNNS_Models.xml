@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SNNS_Models</name>
+    </assembly>
+    <members>
+        <member name="T:SNNS_Models.IFNeuron">
+            <summary>
+            IF神经元，采用WeightSynapse突触
+            </summary>
+        </member>
+        <member name="P:SNNS_Models.IFNeuron.SpikeCounts">
+            <summary>
+            记录有多少次脉冲
+            </summary>
+        </member>
+    </members>
+</doc>
