@@ -19,32 +19,69 @@ namespace BulletinBoard
     /// </summary>
     public partial class HeatMap : UserControl
     {
-        int BlockWidth = 8;
-        int BlockHeight = 8;
-        public HeatMap(int height,int width,double[] data)
+        int PixelWidth = 8;
+        double Max = 0;
+        int PWidth { get; set; }
+        int PHeight { get; set; }
+        List<PixelButton> Pixels = new List<PixelButton>();
+        double[] Data;
+
+        public HeatMap(int height,int width,double[] data,int scale=8)
         {
-            this.Max = data.Max();
+            PixelWidth = scale;
+            this.PWidth = width;
+            this.PHeight = height;
+            this.Data = data;
             // TODO 参数检查
             InitializeComponent();
-            this.main.Width = BlockWidth * width;
-            this.main.Height = BlockWidth * height;
-            for (int j = 0; j < height; j++)
+            this.MainCanvas.Width = PixelWidth * PWidth;
+            this.MainCanvas.Height = PixelWidth * PHeight;
+
+            this.Max = data.Max();
+            for (int j = 0; j < PHeight; j++)
             {
-                for (int i = 0; i < width; i++)
+                for (int i = 0; i < PWidth; i++)
                 {
-                    var n = new Button();
-                    n.SetValue(Canvas.LeftProperty,(double)(j * BlockWidth));
-                    n.SetValue(Canvas.TopProperty, (double)(i * BlockWidth));
-                    n.Width = 10;
-                    n.Height = 10;
-                    n.BorderThickness = new Thickness(0);
-                    n.Background = new SolidColorBrush(GetColor(data[j * width + i]));
-                    this.main.Children.Add(n);
+                    var n = new PixelButton();
+
+                    n.SetValue(Canvas.LeftProperty, (double)(j * PixelWidth));
+                    n.SetValue(Canvas.TopProperty, (double)(i * PixelWidth));
+                    n.Width = PixelWidth;
+                    n.Height = PixelWidth;
+                    n.Background = new SolidColorBrush(GetColor(Data[i * PWidth + j]));
+                    n.Click += Button_Click;
+                    n.Index = this.Pixels.Count;
+                    this.Pixels.Add(n);
+                    
+                    this.MainCanvas.Children.Add(n);
                 }
             }
         }
 
-        double Max = 0;
+        public void Update(double[] data)
+        {
+            this.Max = data.Max();
+            this.Data = data;
+            int index = 0;
+            for (int j = 0; j < PHeight; j++)
+            {
+                for (int i = 0; i < PWidth; i++)
+                {
+                    index = i * PWidth + j;
+                    var n = Pixels[index];
+                    n.Background = new SolidColorBrush(GetColor(Data[index]));
+                }
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var n = sender as PixelButton;
+            this.X.Text = $"{n.Index% PWidth}";
+            this.Y.Text = $"{n.Index/PWidth}";
+            this.Values.Text = $"{Data[n.Index]}";
+        }
+
 
         Color GetGrayColor(double d)
         {
@@ -55,7 +92,6 @@ namespace BulletinBoard
             }
             return Color.FromRgb(t,t,t);
         }
-
         Color GetColor(double d)
         {
             //to hsv
