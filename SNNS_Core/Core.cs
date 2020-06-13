@@ -46,6 +46,39 @@ namespace SNNS_Core
                 IsRoundB = !IsRoundB;
             }
         }
+
+        /// <summary>
+        /// Debug模式运行网络
+        /// 此模式下可以进行debug操作，需要自定义
+        /// </summary>
+        /// <param name="time"></param>
+        public static void Run_Debug(int time)
+        {
+            for (int i = 0; i < time; i++)
+            {
+                Parallel.ForEach(NeuronBase.AllNeurons, (n) =>
+                {
+                    //更新神经元
+                    n.Update();
+                    n.Debug();
+                    //路由脉冲信息
+                    //一条突触只能有一对后射-前射对应，所以不用担心数据竞争
+                    if (n.IsFiring)
+                    {
+                        foreach (var syn in n.Axon)
+                        {
+                            syn.SetReceive();
+                            syn.OnReceived();
+
+                            syn.Debug();
+                        }
+                        n.IsFiring = false;
+                    }
+                });
+                IsRoundB = !IsRoundB;
+            }
+        }
+
         //static void A_Run_TPL(int time)
         //{
         //    //更新神经元

@@ -36,15 +36,19 @@ namespace SNNS_Core
 
         public virtual void Update() { }
         /// <summary>
-        /// 第一次接受到脉冲的动作
+        /// 接受到脉冲时候进行的动作
         /// </summary>
         public virtual void OnReceived() { }
+        /// <summary>
+        /// Debug阶段操作
+        /// </summary>
+        public virtual void Debug() { }
 
         /// <summary>
         /// 设置Receive flag
         /// 此函数仅供Core调用
-        /// 对于Core来说，A轮写入Received_A,B轮写B
-        /// 对于神经元说，Received_B在A轮才是上一次脉冲结果
+        /// 对于Core来说，A轮将脉冲信息写入Received_A,B轮写B
+        /// 对于神经元说，Received_B的信息在A轮才是上一次脉冲结果
         /// </summary>
         public void SetReceive()
         {

@@ -1,0 +1,73 @@
+﻿using SNNS_Core;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace SNNS_Models
+{
+    /// <summary>
+    /// LIF神经元，采用近似指数下降衰减
+    /// 采用WeightSynapse突触
+    /// </summary>
+    public class LIF_Simple : NeuronBase
+    {
+        public int Refractory { get; set; } = 0;
+        public double MembranePotential { get; set; } = 0;
+        public double MinPotential { get; set; } = -100;
+        public double MaxPotential { get; set; } = 100;
+        public double Threshold { get; set; } = 1;
+        public double Current { get; set; } = 0;
+        /// <summary>
+        /// 衰减因子
+        /// </summary>
+        public double Decay { get; set; } = 1;
+        int ActualRefractory { get; set; } = 0;
+        /// <summary>
+        /// 记录有多少次脉冲
+        /// </summary>
+        public long SpikeCounts { get; set; } = 0;
+
+        /// <summary>
+        /// 更新规则
+        /// </summary>
+        public override void NeuronStateUpdate()
+        {
+            MembranePotential += Current;
+            if (ActualRefractory > 0)
+            {
+                ActualRefractory--;
+                return;
+            }
+            //Integrate
+            MembranePotential += Integrate();
+
+            MembranePotential /= Decay;
+            //Fire
+            if (MembranePotential >= Threshold)
+            {
+                this.IsFiring = true;
+                MembranePotential -= Threshold;
+                MembranePotential = MembranePotential >= MinPotential ? MembranePotential : MinPotential;
+                ActualRefractory = Refractory;
+                SpikeCounts += 1;
+            }
+        }
+
+        double Integrate()
+        {
+            double res = 0.0;
+            foreach (var syn in this.Afferent)
+            {
+                var s = syn as WeightSynapse;
+
+                var f = s.GetReceiptFlag();
+                if (f.Value)
+                {
+                    res += s.Weight;
+                    f.Value = false;
+                }
+            }
+            return res;
+        }
+    }
+}
