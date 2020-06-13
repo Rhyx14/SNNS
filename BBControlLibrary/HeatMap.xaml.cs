@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BulletinBoard
+namespace BBControlLibrary
 {
     /// <summary>
     /// HeatMap.xaml 的交互逻辑
@@ -23,7 +23,7 @@ namespace BulletinBoard
         double Max = 0;
         int PWidth { get; set; }
         int PHeight { get; set; }
-        List<PixelButton> Pixels = new List<PixelButton>();
+        List<Pixel> Pixels = new List<Pixel>();
         double[] Data;
 
         public HeatMap(int height,int width,double[] data,int scale=8)
@@ -42,17 +42,12 @@ namespace BulletinBoard
             {
                 for (int i = 0; i < PWidth; i++)
                 {
-                    var n = new PixelButton();
+                    var n = new Pixel(PixelWidth,this.Pixels.Count,Button_Click,new SolidColorBrush(GetColor(Data[i * PWidth + j])));
 
                     n.SetValue(Canvas.LeftProperty, (double)(j * PixelWidth));
                     n.SetValue(Canvas.TopProperty, (double)(i * PixelWidth));
-                    n.Width = PixelWidth;
-                    n.Height = PixelWidth;
-                    n.Background = new SolidColorBrush(GetColor(Data[i * PWidth + j]));
-                    n.Click += Button_Click;
-                    n.Index = this.Pixels.Count;
-                    this.Pixels.Add(n);
-                    
+
+                    this.Pixels.Add(n);           
                     this.MainCanvas.Children.Add(n);
                 }
             }
@@ -74,9 +69,9 @@ namespace BulletinBoard
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, MouseEventArgs e)
         {
-            var n = sender as PixelButton;
+            var n = sender as Pixel;
             this.X.Text = $"{n.Index% PWidth}";
             this.Y.Text = $"{n.Index/PWidth}";
             this.Values.Text = $"{Data[n.Index]}";

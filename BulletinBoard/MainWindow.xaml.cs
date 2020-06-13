@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BBControlLibrary;
 
 namespace BulletinBoard
 {
@@ -36,11 +37,11 @@ namespace BulletinBoard
                 new HeatMap(48, 48, data)
                 );
 
-            //for (int i = 0; i < 48*48; i++)
+            //for (int i = 0; i < 48 * 48; i++)
             //{
-            //    data[i] = Math.Sin(i*0.01);
+            //    data[i] = Math.Sin(i * 0.01);
             //}
-            //this.mainCanvas.Children.Add(new LineChart(data,200,400));
+            //this.mainCanvas.Children.Add(new LineChart(data, 200, 400));
 
         }
     }

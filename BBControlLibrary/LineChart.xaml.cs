@@ -12,18 +12,19 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BulletinBoard
+namespace BBControlLibrary
 {
     /// <summary>
     /// LineChart.xaml 的交互逻辑
     /// </summary>
     public partial class LineChart : UserControl
     {
-        int PixelSize = 4;
         double[] Data;
         public LineChart(double[] data,int height=120, int width=240)
         {
             InitializeComponent();
+
+
             this.MainCanvas.Width = width;
             this.MainCanvas.Height = height;
             Data = data;
@@ -32,15 +33,15 @@ namespace BulletinBoard
             double min = data.Min();
 
             double minmax = max - min;
+
+            var red_brush = new SolidColorBrush(Colors.Red);
             if (minmax==0)
             {
                 for (int i = 0; i < data.Length; i++)
                 {
-                    var n = new PixelButton();
-                    n.Index = i;
+                    var n = new Pixel(3,i,Button_Click,red_brush);
                     n.SetValue(Canvas.LeftProperty, ((double)i / data.Length) * width);
                     n.SetValue(Canvas.TopProperty, (double)height);
-                    n.Click += Button_Click;
                     this.MainCanvas.Children.Add(n);
                 }
             }
@@ -48,21 +49,21 @@ namespace BulletinBoard
             {
                 for (int i = 0; i < data.Length; i++)
                 {
-                    var n = new PixelButton();
-                    n.Index = i;
+                    var n = new Pixel(3, i, Button_Click, red_brush);
                     n.SetValue(Canvas.LeftProperty, ((double)i / data.Length) * width);
                     n.SetValue(Canvas.BottomProperty, ((data[i] - min) / minmax) * height);
-                    n.Click += Button_Click;
                     this.MainCanvas.Children.Add(n);
                 }
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, MouseEventArgs e)
         {
-            var n = sender as PixelButton;
+            var n = sender as Pixel;
             this.X.Text = $"{n.Index}";
             this.Values.Text = $"{Data[n.Index]}";
         }
+
+
     }
 }
