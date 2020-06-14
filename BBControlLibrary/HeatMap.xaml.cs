@@ -19,6 +19,11 @@ namespace BBControlLibrary
     /// </summary>
     public partial class HeatMap : UserControl
     {
+        public enum Mode : byte
+        {
+            Color=0,
+            Gray
+        }
         int PixelWidth = 8;
         double Max = 0;
         int PWidth { get; set; }
@@ -26,7 +31,7 @@ namespace BBControlLibrary
         List<Pixel> Pixels = new List<Pixel>();
         double[] Data;
 
-        public HeatMap(int height,int width,double[] data,int scale=8)
+        public HeatMap(int height,int width,double[] data,int scale=8,Mode mode=Mode.Color)
         {
             PixelWidth = scale;
             this.PWidth = width;
@@ -38,38 +43,74 @@ namespace BBControlLibrary
             this.MainCanvas.Height = PixelWidth * PHeight;
 
             this.Max = data.Max();
-            for (int j = 0; j < PHeight; j++)
+
+            if (mode == Mode.Gray)
             {
-                for (int i = 0; i < PWidth; i++)
+                for (int j = 0; j < PHeight; j++)
                 {
-                    var n = new Pixel(PixelWidth,this.Pixels.Count,Button_Click,new SolidColorBrush(GetColor(Data[i * PWidth + j])));
+                    for (int i = 0; i < PWidth; i++)
+                    {
+                        var n = new Pixel(PixelWidth, this.Pixels.Count, OnMouseOver, new SolidColorBrush(GetGrayColor(Data[i * PWidth + j])));
 
-                    n.SetValue(Canvas.LeftProperty, (double)(j * PixelWidth));
-                    n.SetValue(Canvas.TopProperty, (double)(i * PixelWidth));
+                        n.SetValue(Canvas.LeftProperty, (double)(j * PixelWidth));
+                        n.SetValue(Canvas.TopProperty, (double)(i * PixelWidth));
 
-                    this.Pixels.Add(n);           
-                    this.MainCanvas.Children.Add(n);
+                        this.Pixels.Add(n);
+                        this.MainCanvas.Children.Add(n);
+                    }
+                }
+            }
+            else if (mode==Mode.Color)
+            {
+                for (int j = 0; j < PHeight; j++)
+                {
+                    for (int i = 0; i < PWidth; i++)
+                    {
+                        var n = new Pixel(PixelWidth,this.Pixels.Count,OnMouseOver,new SolidColorBrush(GetColor(Data[i * PWidth + j])));
+
+                        n.SetValue(Canvas.LeftProperty, (double)(j * PixelWidth));
+                        n.SetValue(Canvas.TopProperty, (double)(i * PixelWidth));
+
+                        this.Pixels.Add(n);           
+                        this.MainCanvas.Children.Add(n);
+                    }
                 }
             }
         }
 
-        public void Update(double[] data)
+        public void Update(double[] data,Mode mode)
         {
             this.Max = data.Max();
             this.Data = data;
             int index = 0;
-            for (int j = 0; j < PHeight; j++)
+            if (mode == Mode.Color)
             {
-                for (int i = 0; i < PWidth; i++)
+                for (int j = 0; j < PHeight; j++)
                 {
-                    index = i * PWidth + j;
-                    var n = Pixels[index];
-                    n.Background = new SolidColorBrush(GetColor(Data[index]));
+                    for (int i = 0; i < PWidth; i++)
+                    {
+                        index = i * PWidth + j;
+                        var n = Pixels[index];
+                        n.Background = new SolidColorBrush(GetColor(Data[index]));
+                    }
                 }
             }
+            else if (mode ==Mode.Gray)
+            {
+                for (int j = 0; j < PHeight; j++)
+                {
+                    for (int i = 0; i < PWidth; i++)
+                    {
+                        index = i * PWidth + j;
+                        var n = Pixels[index];
+                        n.Background = new SolidColorBrush(GetGrayColor(Data[index]));
+                    }
+                }
+            }
+
         }
 
-        private void Button_Click(object sender, MouseEventArgs e)
+        private void OnMouseOver(object sender, MouseEventArgs e)
         {
             var n = sender as Pixel;
             this.X.Text = $"{n.Index% PWidth}";

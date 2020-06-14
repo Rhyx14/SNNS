@@ -72,7 +72,7 @@ namespace SNNS_Core
         }
 
         /// <summary>
-        /// 连接两个神经元
+        /// 连接两个神经元（弃用）
         /// </summary>
         /// <param name="g1">前射的神经元组</param>
         /// <param name="g2">后射的神经元组</param>

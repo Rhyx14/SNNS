@@ -102,5 +102,20 @@ namespace SNNS_Core
         //    IsRoundB = !IsRoundB;
         //}
 
+        /// <summary>
+        /// 连接两个神经元
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="dst"></param>
+        /// <param name="s1">突触实例</param>
+        public static void Connect(NeuronBase src,NeuronBase dst,SynapseBase s1)
+        {
+            s1.Pre_SynapseID = src.ID;
+            s1.Post_SynapseID = dst.ID;
+            //添加突触
+            dst.Afferent.Add(s1);
+            //添加轴突
+            src.Axon.Add(s1);
+        }
     }
 }
