@@ -13,6 +13,10 @@ namespace SNNS_Core
         public string Name { get; set; }
 
         public int Count { get; }
+        /// <summary>
+        /// 宽度，用于设置二维情况下访问
+        /// </summary>
+        public int Width { get; set; } = 1;
 
         /// <summary>
         /// 神经元数组
@@ -20,6 +24,7 @@ namespace SNNS_Core
         /// </summary>
         T[] Neurons { get; set; }
 
+        #region CTOR
         /// <summary>
         /// 创建神经元组
         /// </summary>
@@ -59,6 +64,36 @@ namespace SNNS_Core
         }
 
         /// <summary>
+        /// 初始化操作
+        /// </summary>
+        /// <param name="neurons"></param>
+        public delegate void InitAction(T neurons);
+        /// <summary>
+        /// 创建神经元组
+        /// </summary>
+        /// <param name="count">神经元个数</param>
+        /// <param name="init">初始化操作</param>
+        /// <param name="name">神经元名称</param>
+        public NeuronGroup(int count, InitAction init, int width = 1, string name = "undefined")
+        {
+            this.Count = count;
+            this.Name = name;
+            this.Neurons = new T[count];
+            this.Width = width;
+
+            //构造时候不要用TPL加速，不然会有错误
+            for (int i = 0; i < count; i++)
+            {
+                var n = Activator.CreateInstance<T>();
+                n.GroupID = i;//全局ID在构造函数时候就会初始化，不必要在此赋值
+                this.Neurons[i] = n;
+                init(n);
+            }
+        }
+        #endregion
+
+        #region 索引器
+        /// <summary>
         /// 返回该group的第index号神经元
         /// </summary>
         /// <param name="index"></param>
@@ -70,6 +105,22 @@ namespace SNNS_Core
                 return Neurons[index];
             }
         }
+
+        /// <summary>
+        /// 二维索引
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public T this[int h,int w]
+        {
+            get
+            {
+                return Neurons[h *Width + w];
+            }
+        }
+        #endregion
+
 
         /// <summary>
         /// 连接两个神经元（弃用）

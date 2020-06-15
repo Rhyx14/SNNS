@@ -20,6 +20,61 @@
             </summary>
             <param name="time">运行时间（ticks）</param>
         </member>
+        <member name="M:SNNS_Core.Core.Run_Debug(System.Int32)">
+            <summary>
+            Debug模式运行网络
+            此模式下可以进行debug操作，需要自定义
+            </summary>
+            <param name="time"></param>
+        </member>
+        <member name="M:SNNS_Core.Core.Connect(SNNS_Core.NeuronBase,SNNS_Core.NeuronBase,SNNS_Core.SynapseBase)">
+            <summary>
+            连接两个神经元
+            </summary>
+            <param name="src"></param>
+            <param name="dst"></param>
+            <param name="s1">突触实例</param>
+        </member>
+        <member name="T:SNNS_Core.NeuronBase">
+            <summary>
+            神经元基类
+            </summary>
+        </member>
+        <member name="P:SNNS_Core.NeuronBase.AllNeurons">
+            <summary>
+            所有的神经元的列表
+            </summary>
+        </member>
+        <member name="M:SNNS_Core.NeuronBase.#ctor">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="P:SNNS_Core.NeuronBase.Afferent">
+            <summary>
+            传入突触的引用列表
+            </summary>
+        </member>
+        <member name="P:SNNS_Core.NeuronBase.Axon">
+            <summary>
+            传出突触的引用列表
+            </summary>
+        </member>
+        <member name="P:SNNS_Core.NeuronBase.ID">
+            <summary>
+            神经元组内的ID
+            </summary>
+        </member>
+        <member name="P:SNNS_Core.NeuronBase.GroupID">
+            <summary>
+            全局的ID
+            </summary>
+        </member>
+        <member name="P:SNNS_Core.NeuronBase.IsFiring">
+            <summary>
+            是否发射脉冲
+            </summary>
+        </member>
         <member name="M:SNNS_Core.NeuronBase.NeuronStateUpdate">
             <summary>
             更新神经元状态
@@ -30,10 +85,20 @@
             更新神经元信息
             </summary>
         </member>
+        <member name="M:SNNS_Core.NeuronBase.Debug">
+            <summary>
+            Debug阶段操作
+            </summary>
+        </member>
         <member name="T:SNNS_Core.NeuronGroup`1">
             <summary>
             神经元组
             方便建立网络使用，本身不存储神经元和突触的实例
+            </summary>
+        </member>
+        <member name="P:SNNS_Core.NeuronGroup`1.Width">
+            <summary>
+            宽度，用于设置二维情况下访问
             </summary>
         </member>
         <member name="P:SNNS_Core.NeuronGroup`1.Neurons">
@@ -57,6 +122,20 @@
             <param name="neuronType">神经元类型</param>
             <param name="name">神经元名称</param>
         </member>
+        <member name="T:SNNS_Core.NeuronGroup`1.InitAction">
+            <summary>
+            初始化操作
+            </summary>
+            <param name="neurons"></param>
+        </member>
+        <member name="M:SNNS_Core.NeuronGroup`1.#ctor(System.Int32,SNNS_Core.NeuronGroup{`0}.InitAction,System.Int32,System.String)">
+            <summary>
+            创建神经元组
+            </summary>
+            <param name="count">神经元个数</param>
+            <param name="init">初始化操作</param>
+            <param name="name">神经元名称</param>
+        </member>
         <member name="P:SNNS_Core.NeuronGroup`1.Item(System.Int32)">
             <summary>
             返回该group的第index号神经元
@@ -64,9 +143,17 @@
             <param name="index"></param>
             <returns></returns>
         </member>
+        <member name="P:SNNS_Core.NeuronGroup`1.Item(System.Int32,System.Int32)">
+            <summary>
+            二维索引
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns></returns>
+        </member>
         <member name="M:SNNS_Core.NeuronGroup`1.Connect(SNNS_Core.NeuronGroup{`0},SNNS_Core.NeuronGroup{`0},System.Int32,System.Int32,SNNS_Core.SynapseBase)">
             <summary>
-            连接两个神经元
+            连接两个神经元（弃用）
             </summary>
             <param name="g1">前射的神经元组</param>
             <param name="g2">后射的神经元组</param>
@@ -91,15 +178,20 @@
         </member>
         <member name="M:SNNS_Core.SynapseBase.OnReceived">
             <summary>
-            第一次接受到脉冲的动作
+            接受到脉冲时候进行的动作
+            </summary>
+        </member>
+        <member name="M:SNNS_Core.SynapseBase.Debug">
+            <summary>
+            Debug阶段操作
             </summary>
         </member>
         <member name="M:SNNS_Core.SynapseBase.SetReceive">
             <summary>
             设置Receive flag
             此函数仅供Core调用
-            对于Core来说，A轮写入Received_A,B轮写B
-            对于神经元说，Received_B在A轮才是上一次脉冲结果
+            对于Core来说，A轮将脉冲信息写入Received_A,B轮写B
+            对于神经元说，Received_B的信息在A轮才是上一次脉冲结果
             </summary>
         </member>
         <member name="M:SNNS_Core.WorkerGroup.#ctor(System.Int32)">

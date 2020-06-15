@@ -50,10 +50,10 @@ namespace BBControlLibrary
                 {
                     for (int i = 0; i < PWidth; i++)
                     {
-                        var n = new Pixel(PixelWidth, this.Pixels.Count, OnMouseOver, new SolidColorBrush(GetGrayColor(Data[i * PWidth + j])));
+                        var n = new Pixel(PixelWidth, this.Pixels.Count, OnMouseOver, new SolidColorBrush(GetGrayColor(Data[i + j * PWidth])));
 
-                        n.SetValue(Canvas.LeftProperty, (double)(j * PixelWidth));
-                        n.SetValue(Canvas.TopProperty, (double)(i * PixelWidth));
+                        n.SetValue(Canvas.LeftProperty, (double)(i * PixelWidth));
+                        n.SetValue(Canvas.TopProperty, (double)(j * PixelWidth));
 
                         this.Pixels.Add(n);
                         this.MainCanvas.Children.Add(n);
@@ -66,10 +66,10 @@ namespace BBControlLibrary
                 {
                     for (int i = 0; i < PWidth; i++)
                     {
-                        var n = new Pixel(PixelWidth,this.Pixels.Count,OnMouseOver,new SolidColorBrush(GetColor(Data[i * PWidth + j])));
+                        var n = new Pixel(PixelWidth,this.Pixels.Count,OnMouseOver,new SolidColorBrush(GetColor(Data[i + j*PWidth])));
 
-                        n.SetValue(Canvas.LeftProperty, (double)(j * PixelWidth));
-                        n.SetValue(Canvas.TopProperty, (double)(i * PixelWidth));
+                        n.SetValue(Canvas.LeftProperty, (double)(i * PixelWidth));
+                        n.SetValue(Canvas.TopProperty, (double)(j* PixelWidth));
 
                         this.Pixels.Add(n);           
                         this.MainCanvas.Children.Add(n);
@@ -89,7 +89,7 @@ namespace BBControlLibrary
                 {
                     for (int i = 0; i < PWidth; i++)
                     {
-                        index = i * PWidth + j;
+                        index = i + j* PWidth;
                         var n = Pixels[index];
                         n.Background = new SolidColorBrush(GetColor(Data[index]));
                     }
@@ -101,7 +101,7 @@ namespace BBControlLibrary
                 {
                     for (int i = 0; i < PWidth; i++)
                     {
-                        index = i * PWidth + j;
+                        index = i + j * PWidth;
                         var n = Pixels[index];
                         n.Background = new SolidColorBrush(GetGrayColor(Data[index]));
                     }

@@ -14,5 +14,31 @@
             记录有多少次脉冲
             </summary>
         </member>
+        <member name="T:SNNS_Models.LIF_Simple">
+            <summary>
+            LIF神经元，采用近似指数下降衰减
+            采用WeightSynapse突触
+            </summary>
+        </member>
+        <member name="P:SNNS_Models.LIF_Simple.Decay">
+            <summary>
+            衰减因子
+            </summary>
+        </member>
+        <member name="P:SNNS_Models.LIF_Simple.SpikeCounts">
+            <summary>
+            记录有多少次脉冲
+            </summary>
+        </member>
+        <member name="M:SNNS_Models.LIF_Simple.NeuronStateUpdate">
+            <summary>
+            更新规则
+            </summary>
+        </member>
+        <member name="T:SNNS_Models.WeightSynapse">
+            <summary>
+            带有权重的简单突触
+            </summary>
+        </member>
     </members>
 </doc>

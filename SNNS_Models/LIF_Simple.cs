@@ -41,7 +41,6 @@ namespace SNNS_Models
             //Integrate
             MembranePotential += Integrate();
 
-            MembranePotential /= Decay;
             //Fire
             if (MembranePotential >= Threshold)
             {
@@ -50,6 +49,11 @@ namespace SNNS_Models
                 MembranePotential = MembranePotential >= MinPotential ? MembranePotential : MinPotential;
                 ActualRefractory = Refractory;
                 SpikeCounts += 1;
+            }
+            //leaky
+            else
+            {
+                MembranePotential /= Decay;
             }
         }
 
