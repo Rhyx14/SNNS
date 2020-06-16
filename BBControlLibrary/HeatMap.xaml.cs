@@ -43,7 +43,26 @@ namespace BBControlLibrary
             this.MainCanvas.Height = PixelWidth * PHeight;
 
             this.Max = data.Max();
+            Draw(mode);
+        }
 
+        //public HeatMap(double[,] data, int scale = 8, Mode mode = Mode.Color)
+        //{
+        //    PixelWidth = scale;
+        //    this.PWidth = data.GetLength(1);
+        //    this.PHeight = data.GetLength(0);
+        //    this.Data = data;
+        //    // TODO 参数检查
+        //    InitializeComponent();
+        //    this.MainCanvas.Width = PixelWidth * PWidth;
+        //    this.MainCanvas.Height = PixelWidth * PHeight;
+
+        //    this.Max = data.Max();
+        //    Draw(mode);
+        //}
+
+        void Draw(Mode mode)
+        {
             if (mode == Mode.Gray)
             {
                 for (int j = 0; j < PHeight; j++)
@@ -60,18 +79,18 @@ namespace BBControlLibrary
                     }
                 }
             }
-            else if (mode==Mode.Color)
+            else if (mode == Mode.Color)
             {
                 for (int j = 0; j < PHeight; j++)
                 {
                     for (int i = 0; i < PWidth; i++)
                     {
-                        var n = new Pixel(PixelWidth,this.Pixels.Count,OnMouseOver,new SolidColorBrush(GetColor(Data[i + j*PWidth])));
+                        var n = new Pixel(PixelWidth, this.Pixels.Count, OnMouseOver, new SolidColorBrush(GetColor(Data[i + j * PWidth])));
 
                         n.SetValue(Canvas.LeftProperty, (double)(i * PixelWidth));
-                        n.SetValue(Canvas.TopProperty, (double)(j* PixelWidth));
+                        n.SetValue(Canvas.TopProperty, (double)(j * PixelWidth));
 
-                        this.Pixels.Add(n);           
+                        this.Pixels.Add(n);
                         this.MainCanvas.Children.Add(n);
                     }
                 }
@@ -109,7 +128,6 @@ namespace BBControlLibrary
             }
 
         }
-
         private void OnMouseOver(object sender, MouseEventArgs e)
         {
             var n = sender as Pixel;
@@ -117,8 +135,6 @@ namespace BBControlLibrary
             this.Y.Text = $"{n.Index/PWidth}";
             this.Values.Text = $"{Data[n.Index]}";
         }
-
-
         Color GetGrayColor(double d)
         {
             var t = (byte)(d / Max * 255);

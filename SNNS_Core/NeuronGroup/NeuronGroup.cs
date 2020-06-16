@@ -8,7 +8,7 @@ namespace SNNS_Core
     /// 神经元组
     /// 方便建立网络使用，本身不存储神经元和突触的实例
     /// </summary>
-    public class NeuronGroup<T> where T:NeuronBase
+    public partial class NeuronGroup<T> where T:NeuronBase
     {
         public string Name { get; set; }
 
@@ -46,14 +46,14 @@ namespace SNNS_Core
         /// <summary>
         /// 创建神经元组
         /// </summary>
-        /// <param name="length">神经元个数</param>
-        /// <param name="neuronType">神经元类型</param>
-        /// <param name="name">神经元名称</param>
-        public NeuronGroup(int count, string name = "undefined")
+        /// <param name="count"></param>
+        /// <param name="name">神经元组名称</param>
+        public NeuronGroup(int count,int width=1, string name = "undefined")
         {
             this.Count = count;
             this.Name = name;
             this.Neurons = new T[count];
+            this.Width = width;
 
             for (int i = 0; i < count; i++)
             {
@@ -62,6 +62,7 @@ namespace SNNS_Core
                 this.Neurons[i] = n;
             }
         }
+
 
         /// <summary>
         /// 初始化操作
@@ -73,6 +74,7 @@ namespace SNNS_Core
         /// </summary>
         /// <param name="count">神经元个数</param>
         /// <param name="init">初始化操作</param>
+        /// <param name="width"></param>
         /// <param name="name">神经元名称</param>
         public NeuronGroup(int count, InitAction init, int width = 1, string name = "undefined")
         {
@@ -91,36 +93,6 @@ namespace SNNS_Core
             }
         }
         #endregion
-
-        #region 索引器
-        /// <summary>
-        /// 返回该group的第index号神经元
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public T this[int index]
-        {
-            get
-            {
-                return Neurons[index];
-            }
-        }
-
-        /// <summary>
-        /// 二维索引
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        public T this[int h,int w]
-        {
-            get
-            {
-                return Neurons[h *Width + w];
-            }
-        }
-        #endregion
-
 
         /// <summary>
         /// 连接两个神经元（弃用）
