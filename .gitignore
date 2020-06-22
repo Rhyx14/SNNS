@@ -17,6 +17,9 @@ Test/
 Example/
 Example*/
 
+# 开发日志
+*.xlog.md
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

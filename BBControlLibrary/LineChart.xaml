@@ -52,11 +52,7 @@
                                 <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
                                 <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
                             </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
-                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
-                            </Trigger>
+
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -65,16 +61,21 @@
     </UserControl.Resources>
 
     <StackPanel Orientation="Vertical">
-        <Canvas x:Name="MainCanvas" Background="White">
+        <Canvas x:Name="MainCanvas" Background="Transparent">
 
         </Canvas>
-        <StackPanel Orientation="Horizontal" Background="LightGray">
-            <TextBlock>X:</TextBlock>
-            <TextBlock x:Name="X" Margin="2,0"></TextBlock>
-            <TextBlock Margin="2,0">Values:</TextBlock>
-            <TextBlock x:Name="Values" Margin="2,0"></TextBlock>
-            <Button x:Name="btn"></Button>
-        </StackPanel>
+        <Grid Background="LightGray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0">X:</TextBlock>
+            <TextBlock x:Name="X" Grid.Column="1"></TextBlock>
+            <TextBlock Grid.Column="2">Values:</TextBlock>
+            <TextBlock x:Name="Values"  Grid.Column="3"></TextBlock>
+        </Grid>
     </StackPanel>
 
 </UserControl>

@@ -50,7 +50,7 @@ namespace SNNS_Models
             foreach (var syn in this.Afferent)
             {
                 var s = syn as WeightSynapse;
-
+                //该突触的接收到脉冲的标志
                 var f = s.GetReceiptFlag();
                 if (f.Value)
                 {

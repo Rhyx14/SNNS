@@ -24,7 +24,6 @@ namespace BBControlLibrary
         {
             InitializeComponent();
 
-
             this.MainCanvas.Width = width;
             this.MainCanvas.Height = height;
             Data = data;
