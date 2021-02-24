@@ -35,6 +35,11 @@
             更新规则
             </summary>
         </member>
+        <member name="T:SNNS_Models.SpikeMonitor">
+            <summary>
+            监测收到的脉冲个数
+            </summary>
+        </member>
         <member name="T:SNNS_Models.WeightSynapse">
             <summary>
             带有权重的简单突触

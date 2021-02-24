@@ -16,22 +16,48 @@ namespace SNNS_Core
         /// </summary>
         public int ID { get; set; }
 
-        ReceiptFlag RA = new ReceiptFlag();
-        ReceiptFlag RB = new ReceiptFlag();
+        Queue<Spike> Spikes { get; set; }
+        public int Delay { get; set; }
+
+        public SynapseBase()
+        {
+            this.Spikes = new Queue<Spike>();
+        }
 
         /// <summary>
-        /// 是否接收到脉冲,由神经元调用
+        /// 当前时刻有多少Spike
         /// </summary>
-        public ReceiptFlag GetReceiptFlag()
+        /// <returns></returns>
+        public int GetSpikes()
         {
-            if (Core.IsRoundB)
+            int res = 0;
+            if (Spikes.Count == 0) return res;
+            while (true)
             {
-                return RA;
+                var t = Spikes.Peek();
+                if (t.Count == 1)
+                {
+                    res++;
+                    Spikes.Dequeue();
+                }
+                else
+                {
+                    break;
+                }
             }
-            else
+            foreach (var item in Spikes)
             {
-                return RB;
+                item.Count--;
             }
+            return res;
+        }
+        
+        /// <summary>
+        /// 设置Spike
+        /// </summary>
+        internal void SetSpike()
+        {
+            this.Spikes.Enqueue(new Spike { Count = Delay });
         }
 
         public virtual void Update() { }
@@ -43,29 +69,6 @@ namespace SNNS_Core
         /// Debug阶段操作
         /// </summary>
         public virtual void Debug() { }
-
-        /// <summary>
-        /// 设置Receive flag
-        /// 此函数仅供Core调用
-        /// 对于Core来说，A轮将脉冲信息写入Received_A,B轮写B
-        /// 对于神经元说，Received_B的信息在A轮才是上一次脉冲结果
-        /// </summary>
-        public void SetReceive()
-        {
-            if (Core.IsRoundB)
-            {
-                RB.Value = true;
-            }
-            else
-            {
-                RA.Value = true;
-            }
-        }
     
-    }
-
-    public class ReceiptFlag
-    {
-        public bool Value { get; set; } = false;
     }
 }

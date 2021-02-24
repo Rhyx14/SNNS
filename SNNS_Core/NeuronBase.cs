@@ -52,7 +52,7 @@ namespace SNNS_Core
         /// <summary>
         /// 更新神经元信息
         /// </summary>
-        public void Update()
+        internal void Update()
         {
             // Debug下Foreach比for快一点？
             // Release下相反
