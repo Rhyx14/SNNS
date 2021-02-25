@@ -16,8 +16,9 @@
 Test/
 Example/
 Example*/
+.sln
 
-# 开发日志
+# 锟斤拷锟斤拷锟斤拷志
 *.xlog.md
 
 # Build results
