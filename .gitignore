@@ -16,7 +16,7 @@
 Test/
 Example/
 Example*/
-.sln
+*.sln
 
 # ������־
 *.xlog.md
