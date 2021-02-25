@@ -14,20 +14,26 @@ namespace SNNS_Core
         {
             NeuronBase.AllNeurons.TrimExcess();
         }
+        
+        /// <summary>
+        /// 时间戳
+        /// </summary>
+        static public int Time { get; set; }
+
         /// <summary>
         /// 运行网络
         /// </summary>
         /// <param name="time">运行时间（ticks）</param>
         public static void Run_TPL(int time)
         {
+            Time = 1;
             for (int i = 0; i < time; i++)
             {
                 Parallel.ForEach(NeuronBase.AllNeurons, (n) =>
                 {
                     //更新神经元
-                    n.Update();
+                    n.NeuronStateUpdate();
                     //路由脉冲信息
-                    //一条突触只能有一对后射-前射对应，所以不用担心数据竞争
                     if (n.IsFiring)
                     {
                         foreach (var syn in n.Axon)
@@ -38,13 +44,11 @@ namespace SNNS_Core
                         n.IsFiring = false;
                     }
                 });
-                Parallel.ForEach(NeuronBase.AllNeurons, (n) =>
+                Parallel.ForEach(SynapseBase.Synapses, (s) =>
                 {
-                    foreach (var syn in n.Afferent)
-                    {
-                        syn.Update();
-                    }
+                    s.UpdateSynapseStatus();
                 });
+                Time++;
             }
         }
         /// <summary>

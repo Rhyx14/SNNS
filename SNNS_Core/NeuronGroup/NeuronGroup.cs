@@ -46,9 +46,10 @@ namespace SNNS_Core
         /// <summary>
         /// 创建神经元组
         /// </summary>
-        /// <param name="count"></param>
+        /// <param name="count">个数</param>
+        /// <param name="width">宽度（二维访问）</param>
         /// <param name="name">神经元组名称</param>
-        public NeuronGroup(int count,int width=1, string name = "undefined")
+        public NeuronGroup(int count, int width = 1, string name = "undefined")
         {
             this.Count = count;
             this.Name = name;

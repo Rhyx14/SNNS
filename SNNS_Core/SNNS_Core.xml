@@ -4,14 +4,14 @@
         <name>SNNS_Core</name>
     </assembly>
     <members>
-        <member name="P:SNNS_Core.Core.IsRoundB">
-            <summary>
-            A轮还是B轮标志
-            </summary>
-        </member>
         <member name="M:SNNS_Core.Core.Trim">
             <summary>
             压缩部分内存空间
+            </summary>
+        </member>
+        <member name="P:SNNS_Core.Core.Time">
+            <summary>
+            时间戳
             </summary>
         </member>
         <member name="M:SNNS_Core.Core.Run_TPL(System.Int32)">
@@ -19,13 +19,6 @@
             运行网络
             </summary>
             <param name="time">运行时间（ticks）</param>
-        </member>
-        <member name="M:SNNS_Core.Core.Run_Debug(System.Int32)">
-            <summary>
-            Debug模式运行网络
-            此模式下可以进行debug操作，需要自定义
-            </summary>
-            <param name="time"></param>
         </member>
         <member name="M:SNNS_Core.Core.Connect(SNNS_Core.NeuronBase,SNNS_Core.NeuronBase,SNNS_Core.SynapseBase)">
             <summary>
@@ -78,11 +71,6 @@
         <member name="M:SNNS_Core.NeuronBase.NeuronStateUpdate">
             <summary>
             更新神经元状态
-            </summary>
-        </member>
-        <member name="M:SNNS_Core.NeuronBase.Update">
-            <summary>
-            更新神经元信息
             </summary>
         </member>
         <member name="M:SNNS_Core.NeuronBase.Debug">
@@ -150,7 +138,8 @@
             <summary>
             创建神经元组
             </summary>
-            <param name="count"></param>
+            <param name="count">个数</param>
+            <param name="width">宽度（二维访问）</param>
             <param name="name">神经元组名称</param>
         </member>
         <member name="T:SNNS_Core.NeuronGroup`1.InitAction">
@@ -183,14 +172,56 @@
             前射神经元的全局ID
             </summary>
         </member>
+        <member name="P:SNNS_Core.SynapseBase.Post_SynapseID">
+            <summary>
+            后摄神经元的全局ID
+            </summary>
+        </member>
         <member name="P:SNNS_Core.SynapseBase.ID">
             <summary>
             全局ID
             </summary>
         </member>
-        <member name="M:SNNS_Core.SynapseBase.GetReceiptFlag">
+        <member name="P:SNNS_Core.SynapseBase.Spikes">
             <summary>
-            是否接收到脉冲,由神经元调用
+            脉冲队列
+            </summary>
+        </member>
+        <member name="P:SNNS_Core.SynapseBase.OutSpikes">
+            <summary>
+            本时刻的脉冲队列
+            </summary>
+        </member>
+        <member name="P:SNNS_Core.SynapseBase.Delay">
+            <summary>
+            突触延迟
+            </summary>
+        </member>
+        <member name="P:SNNS_Core.SynapseBase.Synapses">
+            <summary>
+            所有突触集合
+            </summary>
+        </member>
+        <member name="M:SNNS_Core.SynapseBase.#ctor">
+            <summary>
+            默认CTOR
+            将新突触加入到全局的突触列表中
+            </summary>
+        </member>
+        <member name="M:SNNS_Core.SynapseBase.GetSpikes">
+            <summary>
+            当前时刻有多少Spike
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SNNS_Core.SynapseBase.SetSpike">
+            <summary>
+            设置Spike 由pre访问
+            </summary>
+        </member>
+        <member name="M:SNNS_Core.SynapseBase.Update">
+            <summary>
+            更新突触状态
             </summary>
         </member>
         <member name="M:SNNS_Core.SynapseBase.OnReceived">
@@ -201,14 +232,6 @@
         <member name="M:SNNS_Core.SynapseBase.Debug">
             <summary>
             Debug阶段操作
-            </summary>
-        </member>
-        <member name="M:SNNS_Core.SynapseBase.SetReceive">
-            <summary>
-            设置Receive flag
-            此函数仅供Core调用
-            对于Core来说，A轮将脉冲信息写入Received_A,B轮写B
-            对于神经元说，Received_B的信息在A轮才是上一次脉冲结果
             </summary>
         </member>
         <member name="M:SNNS_Core.WorkerGroup.#ctor(System.Int32)">

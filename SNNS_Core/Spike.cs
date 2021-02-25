@@ -6,7 +6,7 @@ namespace SNNS_Core
 {
     class Spike
     {
-        public int Count { get; set; }
+        public int Remain { get; set; }
 
     }
 }

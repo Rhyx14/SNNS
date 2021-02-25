@@ -63,13 +63,9 @@ namespace SNNS_Models
             foreach (var syn in this.Afferent)
             {
                 var s = syn as WeightSynapse;
-
-                var f = s.GetReceiptFlag();
-                if (f.Value)
-                {
-                    res += s.Weight;
-                    f.Value = false;
-                }
+                //该突触的接收到脉冲的标志
+                var f = syn.GetSpikes();
+                res += f * s.Weight;
             }
             return res;
         }

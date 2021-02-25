@@ -50,26 +50,6 @@ namespace SNNS_Core
         public virtual void NeuronStateUpdate() { }
 
         /// <summary>
-        /// 更新神经元信息
-        /// </summary>
-        internal void Update()
-        {
-            // Debug下Foreach比for快一点？
-            // Release下相反
-#if DEBUG
-            foreach (var syn in Afferent)
-            {
-                syn.Update();
-            }
-#else
-            for (int i = 0; i < Afferent.Count; i++)
-            {
-                Afferent[i].Update();
-            }
-#endif
-            NeuronStateUpdate();
-        }
-        /// <summary>
         /// Debug阶段操作
         /// </summary>
         public virtual void Debug() { }
