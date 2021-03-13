@@ -20,10 +20,6 @@ namespace SNNS_Core
         public int ID { get; set; }
 
         /// <summary>
-        /// 脉冲队列
-        /// </summary>
-        Queue<Spike> Spikes { get; set; }
-        /// <summary>
         /// 本时刻的脉冲队列
         /// </summary>
         Queue<Spike> OutSpikes { get; set; }
@@ -43,60 +39,44 @@ namespace SNNS_Core
         /// </summary>
         public SynapseBase()
         {
-            this.Spikes = new Queue<Spike>();
             this.OutSpikes = new Queue<Spike>();
             this.ID = Synapses.Count;
             Synapses.Add(this);
         }
 
         /// <summary>
-        /// 当前时刻有多少Spike
+        /// 当前时刻有多少脉冲到达
         /// </summary>
-        /// <returns></returns>
-        public int GetSpikes()
-        {
-            int res = 0;
-            foreach (var sp in Spikes)
-            {
-                if (sp.Remain == 0)
-                {
-                    res++;
-                }
-            }
-            return res;
-        }
+        public int ArrivedSpikes { get; set; }
         
         /// <summary>
         /// 设置Spike 由pre访问
         /// </summary>
         internal void SetSpike()
         {
-            this.OutSpikes.Enqueue(new Spike { Remain = Delay-1 });
+            this.OutSpikes.Enqueue(new Spike { Remain = Delay+1});
         }
 
         internal void UpdateSynapseStatus()
-        {           
-            while (Spikes.Count != 0)
+        {
+            foreach (var item in OutSpikes)
             {
-                if (Spikes.Peek().Remain == 0)
+                item.Remain--;
+            }
+
+            //检查脉冲队列中是否有已到达的脉冲
+            while (OutSpikes.Count!=0)
+            {
+                var sp = OutSpikes.Peek();
+                if (sp.Remain == 0)
                 {
-                    Spikes.Dequeue();
+                    this.ArrivedSpikes++;
+                    OutSpikes.Dequeue();
                 }
                 else
                 {
                     break;
                 }
-            }
-            foreach (var item in Spikes)
-            {
-                item.Remain--;
-            }
-
-            //本时刻发射的脉冲放入脉冲队列
-            while (OutSpikes.Count!=0)
-            {
-                Spikes.Enqueue(OutSpikes.Peek());
-                OutSpikes.Dequeue();
             }
             Update();
         }

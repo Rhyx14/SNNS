@@ -32,21 +32,22 @@ namespace SNNS_Core
                 Parallel.ForEach(NeuronBase.AllNeurons, (n) =>
                 {
                     //更新神经元
+                    //神经元不能在同时刻检查突触脉冲序列和向突触发射脉冲
                     n.NeuronStateUpdate();
-                    //路由脉冲信息
-                    if (n.IsFiring)
+                });
+                Parallel.ForEach(NeuronBase.AllNeurons, (n) =>
+                {
+                    //路由脉冲信息,更新突触
+                    foreach (var syn in n.Axon)
                     {
-                        foreach (var syn in n.Axon)
+                        if (n.IsFiring)
                         {
                             syn.SetSpike();
                             syn.OnReceived();
+                            n.IsFiring = false;
                         }
-                        n.IsFiring = false;
+                        syn.UpdateSynapseStatus();      
                     }
-                });
-                Parallel.ForEach(SynapseBase.Synapses, (s) =>
-                {
-                    s.UpdateSynapseStatus();
                 });
                 Time++;
             }
