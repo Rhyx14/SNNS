@@ -51,8 +51,7 @@ namespace SNNS_Models
             {
                 var s = syn as WeightSynapse;
                 //该突触的接收到脉冲的标志
-                var f = syn.GetSpikes();
-                res += f * s.Weight;
+                res += s.ArrivedSpikes * s.Weight;
             }
             return res;
         }

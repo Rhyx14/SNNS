@@ -59,6 +59,8 @@ namespace SNNS_Core
 
         internal void UpdateSynapseStatus()
         {
+            //把上时刻的记录清0
+            this.ArrivedSpikes = 0;
             foreach (var item in OutSpikes)
             {
                 item.Remain--;

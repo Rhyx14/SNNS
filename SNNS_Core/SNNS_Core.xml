@@ -182,11 +182,6 @@
             全局ID
             </summary>
         </member>
-        <member name="P:SNNS_Core.SynapseBase.Spikes">
-            <summary>
-            脉冲队列
-            </summary>
-        </member>
         <member name="P:SNNS_Core.SynapseBase.OutSpikes">
             <summary>
             本时刻的脉冲队列
@@ -208,11 +203,10 @@
             将新突触加入到全局的突触列表中
             </summary>
         </member>
-        <member name="M:SNNS_Core.SynapseBase.GetSpikes">
+        <member name="P:SNNS_Core.SynapseBase.ArrivedSpikes">
             <summary>
-            当前时刻有多少Spike
+            当前时刻有多少脉冲到达
             </summary>
-            <returns></returns>
         </member>
         <member name="M:SNNS_Core.SynapseBase.SetSpike">
             <summary>
